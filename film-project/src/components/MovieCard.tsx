@@ -13,7 +13,7 @@ const MovieCard = ({ data }: { data: Movie }) => {
       key={data.id}
       className="relative"
       style={{
-        backgroundImage: `url(${getBackgroundImage(data.backdrop_path)})`,
+        backgroundImage: `url(${getBackgroundImage(data.backdrop_path, "original")})`,
         backgroundSize: "cover",
       }}
     >

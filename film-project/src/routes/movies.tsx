@@ -1,7 +1,7 @@
 import MovieCard from "@/components/MovieCard";
 import MoviesPageFooter from "@/page-components/MoviesPage/Footer";
 import MoviesPageHeader from "@/page-components/MoviesPage/Header";
-import { getPopularMovies } from "@/services/api/Movie/Movie";
+import { getPopularMovies } from "@/services/api/Movie";
 import { Movie } from "@/types/Movie";
 import { createFileRoute } from "@tanstack/react-router";
 

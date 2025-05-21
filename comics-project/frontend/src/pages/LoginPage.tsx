@@ -1,10 +1,10 @@
-import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useUserContext } from '../hooks/useUserContext';
-import { useNavigate } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { User } from '../models/User';
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../hooks/useUserContext";
+import { User } from "../models/User";
 type FormFields = User;
 
 const LoginPage = () => {
@@ -19,7 +19,7 @@ const LoginPage = () => {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     console.log(data);
     setUser({ ...data });
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -44,7 +44,7 @@ const LoginPage = () => {
         <div className="w-full ">
           <label
             className={`input input-bordered flex items-center gap-2 ${
-              errors.username && 'focus-within:outline-error'
+              errors.username && "focus-within:outline-error"
             }`}
           >
             <svg
@@ -57,19 +57,19 @@ const LoginPage = () => {
             </svg>
             Username
             <input
-              {...register('username', {
-                required: 'Username is required',
+              {...register("username", {
+                required: "Username is required",
                 minLength: {
                   value: 3,
-                  message: 'Username must be at least 3 characters long',
+                  message: "Username must be at least 3 characters long",
                 },
                 maxLength: {
-                  value: 15,
-                  message: 'Username must not exceed 15 characters',
+                  value: 30,
+                  message: "Username must not exceed 30 characters",
                 },
                 pattern: {
                   value: /^[a-zA-Z0-9]+$/,
-                  message: 'Username can only contain alphanumeric characters',
+                  message: "Username can only contain alphanumeric characters",
                 },
               })}
               type="text"
@@ -83,7 +83,7 @@ const LoginPage = () => {
         <div className="w-full">
           <label
             className={`input input-bordered flex items-center gap-2 w-full ${
-              errors.password && 'focus-within:outline-error'
+              errors.password && "focus-within:outline-error"
             }`}
           >
             <svg
@@ -100,15 +100,15 @@ const LoginPage = () => {
             </svg>
             Password
             <input
-              {...register('password', {
-                required: 'Password is required',
+              {...register("password", {
+                required: "Password is required",
                 minLength: {
                   value: 8,
-                  message: 'Password must be at least 8 characters long',
+                  message: "Password must be at least 8 characters long",
                 },
                 maxLength: {
                   value: 20,
-                  message: 'Password must not exceed 20 characters',
+                  message: "Password must not exceed 20 characters",
                 },
               })}
               type="password"
@@ -133,6 +133,7 @@ const LoginPage = () => {
             <GoogleLogin
               type="icon"
               shape="circle"
+              theme="filled_black"
               onSuccess={(credentialResponse) => {
                 const data = credentialResponse.credential
                   ? jwtDecode(credentialResponse.credential)
@@ -140,11 +141,11 @@ const LoginPage = () => {
                 const user = data as User;
                 console.log(user);
                 setUser(user);
-                navigate('/profile');
+                navigate("/profile");
                 //email,family_name,given_name,name,picture
               }}
               onError={() => {
-                console.log('Google Login Error:');
+                console.log("Google Login Error:");
               }}
             />
           </div>

@@ -1,15 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import './index.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import UserContextProvider from './hooks/useUserContext.tsx';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import UserContextProvider from "./hooks/useUserContext.tsx";
+import "./index.css";
 const queryClient = new QueryClient();
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId="743628233162-inue7d2a10shlcjdp2627j1qknvg4cbg.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_google_auth_provider}>
       <QueryClientProvider client={queryClient}>
         <UserContextProvider>
           <App />

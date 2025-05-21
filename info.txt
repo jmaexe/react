@@ -1,0 +1,5 @@
+app5 : una dei primi progetti web
+comics-project : progetto non finito
+film-project : sviluppo homepage da FIGMA
+masterpiece : capolavoro su piattaforma UNICA
+react-native : primi progetti non finiti

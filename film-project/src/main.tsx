@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
@@ -21,11 +22,14 @@ declare module "@tanstack/react-router" {
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
+  const queryClient = new QueryClient();
   root.render(
     <StrictMode>
-      <ThemeProvider defaultTheme="dark" storageKey='vite-ui-theme"'>
+      {/* <ThemeProvider defaultTheme="dark" storageKey='vite-ui-theme"'> */}
+      <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-      </ThemeProvider>
+      </QueryClientProvider>
+      {/* </ThemeProvider> */}
     </StrictMode>
   );
 }
