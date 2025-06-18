@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 
-function GameBoard() {
+function GameBoard({ roomName }: { roomName: string }) {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [board, setBoard] = useState(Array(9).fill(""));
-  const [symbol, setSymbol] = useState(null);
+  const [symbol, setSymbol] = useState<string | null>(null);
   const [turn, setTurn] = useState("X");
-  const [winner, setWinner] = useState(null);
+  const [winner, setWinner] = useState<string | null>(null);
 
   useEffect(() => {
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
     const host = window.location.hostname;
 
-    const socket = new WebSocket(`${protocol}://${host}:8000/ws/tris/`);
+    const socket = new WebSocket(
+      `${protocol}://${host}:8000/ws/tris/${roomName}/`
+    );
 
-    socket.onopen = () => console.log("Connected");
-    socket.onclose = () => console.log("Disconnected");
+    socket.onopen = () => console.log(`Connesso alla stanza ${roomName}`);
+    socket.onclose = () => console.log("Disconnesso");
 
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
@@ -30,15 +32,22 @@ function GameBoard() {
         setTurn("X");
         setWinner(null);
       } else if (data.type === "full") {
-        alert("Game is full! Try again later.");
+        alert("La stanza è piena! Riprova più tardi.");
         socket.close();
       }
     };
 
     setWs(socket);
 
-    return () => socket.close();
-  }, []);
+    return () => {
+      socket.close();
+      setWs(null);
+      setBoard(Array(9).fill(""));
+      setSymbol(null);
+      setTurn("X");
+      setWinner(null);
+    };
+  }, [roomName]);
 
   const makeMove = (index: number) => {
     if (!ws || ws.readyState !== WebSocket.OPEN) return;
@@ -49,7 +58,7 @@ function GameBoard() {
 
   return (
     <div>
-      <h2>Tris Multiplayer</h2>
+      <h2> Stanza: {roomName}</h2>
       <p>
         Tu sei: <b>{symbol}</b> - Turno di: <b>{turn}</b>
       </p>
@@ -68,10 +77,13 @@ function GameBoard() {
               width: 100,
               height: 100,
               fontSize: 32,
+              backgroundColor: cell === "" ? "#fff" : "#ddd",
+              opacity: cell === "" && !winner && turn === symbol ? 1 : 0.6,
               cursor:
                 cell === "" && !winner && turn === symbol
                   ? "pointer"
                   : "not-allowed",
+              border: "2px solid #000",
             }}
             disabled={cell !== "" || winner !== null || turn !== symbol}
           >
