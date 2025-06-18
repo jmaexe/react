@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function GameBoard({ roomName }: { roomName: string }) {
+function PvPBoard({ roomName }: { roomName: string }) {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [board, setBoard] = useState(Array(9).fill(""));
   const [symbol, setSymbol] = useState<string | null>(null);
@@ -104,4 +104,4 @@ function GameBoard({ roomName }: { roomName: string }) {
   );
 }
 
-export default GameBoard;
+export default PvPBoard;
