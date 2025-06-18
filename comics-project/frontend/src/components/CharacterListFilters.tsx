@@ -1,22 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
-import { CharacterFilters, fetchComics } from '../models/Characters';
-import { useQuery } from '@tanstack/react-query';
-import ComicsList from './ComicsList';
-import { useDebounce } from '../hooks/useDebounce';
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
+import { fetchComics } from "../api/Comics";
+import { useDebounce } from "../hooks/useDebounce";
+import { CharacterFilters } from "../models/Characters";
+import ComicsList from "./ComicsList";
 
 type CharacterListFiltersProps = {
   onChange: (filters: CharacterFilters) => void;
 };
 
 const CharacterListFilters = ({ onChange }: CharacterListFiltersProps) => {
-  const [limit, setLimit] = useState<CharacterFilters['limit']>(10);
-  const [comics, setComics] = useState<CharacterFilters['comics']>(0);
-  const [name, setName] = useState<CharacterFilters['name']>('');
+  const [limit, setLimit] = useState<CharacterFilters["limit"]>(10);
+  const [comics, setComics] = useState<CharacterFilters["comics"]>(0);
+  const [name, setName] = useState<CharacterFilters["name"]>("");
   const debouncedName = useDebounce(name);
   const selectRefName = useRef<HTMLSelectElement | null>(null);
   const refComics = useRef<HTMLSelectElement | null>(null);
   const { data, isFetching } = useQuery({
-    queryKey: ['comics'],
+    queryKey: ["comics"],
     queryFn: () => fetchComics(),
     refetchOnWindowFocus: false,
     refetchInterval: false,
@@ -35,12 +36,12 @@ const CharacterListFilters = ({ onChange }: CharacterListFiltersProps) => {
           ref={selectRefName}
           className="select select-info select-sm w-full max-w-xs"
           onChange={(e) => {
-            setLimit(+e.target.value as CharacterFilters['limit']);
+            setLimit(+e.target.value as CharacterFilters["limit"]);
           }}
-          defaultValue={'Select limit'}
+          defaultValue={"Select limit"}
           value={limit}
         >
-          <option disabled value={'Select limit'}>
+          <option disabled value={"Select limit"}>
             Select Limit
           </option>
           <option value="10">10</option>
@@ -52,12 +53,12 @@ const CharacterListFilters = ({ onChange }: CharacterListFiltersProps) => {
         <select
           className="select select-info select-sm w-full max-w-xs"
           onChange={(e) => {
-            setComics(+e.target.value as CharacterFilters['comics']);
+            setComics(+e.target.value as CharacterFilters["comics"]);
           }}
           ref={refComics}
-          defaultValue={'Select comic'}
+          defaultValue={"Select comic"}
         >
-          <option disabled value={'Select comic'}>
+          <option disabled value={"Select comic"}>
             Select Comic
           </option>
           {data && <ComicsList comics={data} />}
@@ -68,7 +69,7 @@ const CharacterListFilters = ({ onChange }: CharacterListFiltersProps) => {
             className="badge badge-primary"
             onClick={() => {
               refComics.current
-                ? (refComics.current.value = 'Select comic')
+                ? (refComics.current.value = "Select comic")
                 : null;
               setComics(0);
             }}

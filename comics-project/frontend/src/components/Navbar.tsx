@@ -1,6 +1,7 @@
-import { useUserContext } from '../hooks/useUserContext';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import Root from './Root';
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import iconProfile from "../assets/icon-profile.png";
+import { useUserContext } from "../hooks/useUserContext";
+import Root from "./Root";
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserContext();
@@ -30,10 +31,10 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <Link to={'home'}>Home</Link>
+                <Link to={"home"}>Home</Link>
               </li>
               <li>
-                <Link to={'characters'}>Characters</Link>
+                <Link to={"characters"}>Characters</Link>
               </li>
               <li>
                 {user ? (
@@ -45,7 +46,7 @@ const Navbar = () => {
                   </button>
                 ) : (
                   <Link
-                    to={'login'}
+                    to={"login"}
                     className="btn btn-primary btn-outline btn-sm h-full"
                   >
                     Login
@@ -54,18 +55,18 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <Link className="btn btn-ghost text-xl" to={''}>
+          <Link className="btn btn-ghost text-xl" to={""}>
             Marvel Comics
           </Link>
         </div>
         <div className="navbar-center max-sm:hidden">
           <ul className="menu menu-horizontal px-1 gap-2">
             <li>
-              <Link to={'/'}>Home</Link>
+              <Link to={"/"}>Home</Link>
             </li>
             {user && (
               <li>
-                <Link to={'/characters'}>Characters</Link>
+                <Link to={"/characters"}>Characters</Link>
               </li>
             )}
             <li>
@@ -74,14 +75,14 @@ const Navbar = () => {
                   className="btn btn-primary btn-outline btn-sm h-full"
                   onClick={() => {
                     setUser(undefined);
-                    navigate('/login');
+                    navigate("/login");
                   }}
                 >
                   Logout
                 </button>
               ) : (
                 <Link
-                  to={'login'}
+                  to={"login"}
                   className="btn btn-primary btn-outline btn-sm h-full"
                 >
                   Login
@@ -99,9 +100,9 @@ const Navbar = () => {
                 role="button"
               >
                 <div className="w-12 rounded-full">
-                  <Link to={'profile'}>
+                  <Link to={"profile"}>
                     <img
-                      src={user.picture}
+                      src={user.picture || iconProfile}
                       className=" transition hover:opacity-60"
                     />
                   </Link>

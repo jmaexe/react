@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Character } from '../models/Character';
-import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
-import { useUserContext } from '../hooks/useUserContext';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import { Link } from "react-router-dom";
+import { useUserContext } from "../hooks/useUserContext";
+import { Character } from "../models/Character";
 
 type CharacterCardProps = {
   character: Character;

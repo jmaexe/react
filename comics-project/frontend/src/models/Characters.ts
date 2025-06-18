@@ -1,5 +1,5 @@
-import { Comic } from './Comics.ts';
-import { api } from '../api/axios.ts';
+import { api } from "../api/axios.ts";
+import { Comic } from "./Comics.ts";
 export interface CharacterFilters {
   limit: number;
   name: string;
@@ -16,18 +16,12 @@ export const fetchEvents = async (): Promise<Comic[]> => {
   return response.data;
 };
 export const fetchSeries = async (): Promise<any> => {
-  const response = await api.get('/series');
+  const response = await api.get("/series");
   console.log(response.data);
   return response.data;
 };
 export const fetchStories = async (): Promise<any> => {
-  const response = await api.get('/stories');
-  console.log(response.data);
-  return response.data;
-};
-
-export const fetchComics = async (): Promise<Comic[]> => {
-  const response = await api.get('/comics');
+  const response = await api.get("/stories");
   console.log(response.data);
   return response.data;
 };

@@ -1,0 +1,3 @@
+npm run build
+installare serve npm i -g serve
+serve -s dist (-l 3000)

@@ -49,6 +49,11 @@ const CharacterPage = () => {
                   "series",
                   "stories",
                   "comics",
+                  "resourceURI",
+                  "modified",
+                  "id",
+                  "name",
+                  "description",
                 ].includes(key) && (
                   <p>
                     {key} : {value}

@@ -1,25 +1,28 @@
-import { createBrowserRouter } from 'react-router-dom';
-import CharactersPage from './pages/CharactersPage';
-import Home from './pages/HomePage';
-import ProfilePage from './pages/ProfilePage';
-import NotFound from './pages/NotFound';
-import LoginPage from './pages/LoginPage';
-import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute';
-import CharacterPage from './pages/CharacterPage';
+import { createBrowserRouter } from "react-router-dom";
+import Error from "./components/Error";
+import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
+import CharacterPage from "./pages/CharacterPage";
+import CharactersPage from "./pages/CharactersPage";
+import ComicsPage from "./pages/ComicsPage";
+import Home from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import NotFound from "./pages/NotFound";
+import ProfilePage from "./pages/ProfilePage";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Navbar />,
+    // errorElement: <div> errore</div>,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Home />,
         index: true,
       },
       {
-        path: '/characters',
+        path: "/characters",
         element: (
           <ProtectedRoute>
             <CharactersPage />
@@ -27,7 +30,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/characters/:id',
+        path: "/characters/:id",
         element: (
           <ProtectedRoute>
             <CharacterPage />
@@ -35,18 +38,26 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/profile',
+        path: "/comics",
+        element: (
+          <ProtectedRoute>
+            <ComicsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/profile",
         element: (
           <ProtectedRoute>
             <ProfilePage />
           </ProtectedRoute>
         ),
       },
-      { path: '/login', element: <LoginPage /> },
+      { path: "/login", element: <LoginPage /> },
     ],
   },
   {
-    path: '*',
+    path: "*",
     element: <NotFound />,
   },
 ]);
