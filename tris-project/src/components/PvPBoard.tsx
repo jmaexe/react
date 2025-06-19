@@ -12,7 +12,9 @@ function PvPBoard({ roomName }: { roomName: string }) {
     const host = window.location.hostname;
 
     const socket = new WebSocket(
-      `${protocol}://${host}:8000/ws/tris/${roomName}/`
+      roomName
+        ? `${protocol}://localhost:8000/ws/tris/${roomName}/`
+        : `${protocol}://localhost:8000/ws/tris/`
     );
 
     socket.onopen = () => console.log(`Connesso alla stanza ${roomName}`);

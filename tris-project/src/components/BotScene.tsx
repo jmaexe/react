@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { use, useCallback, useEffect, useMemo, useState } from "react";
 import useBotMove from "../hooks/useBotMove";
 
 const BotScene: React.FC = () => {
@@ -9,8 +9,6 @@ const BotScene: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const botSymbol = playerSymbol === "X" ? "O" : "X";
-
   useEffect(() => {
     if (!playerSymbol) return;
 
@@ -20,6 +18,10 @@ const BotScene: React.FC = () => {
     setTurn("X"); // "X" inizia sempre
   }, [playerSymbol]);
 
+  const botSymbol = useMemo(() => {
+    if (!playerSymbol) return null;
+    return playerSymbol === "X" ? "O" : "X";
+  }, [playerSymbol]);
   const onBotMove = useCallback(
     (newBoard: string[], nextTurn: "X" | "O", winner: string | null) => {
       setBoard(newBoard);
@@ -58,7 +60,9 @@ const BotScene: React.FC = () => {
     const newBoard = [...board];
     newBoard[index] = playerSymbol;
     setBoard(newBoard);
-    setTurn(botSymbol);
+    if (botSymbol) {
+      setTurn(botSymbol);
+    }
     setWinner(null);
     setLoading(true);
     setError(null);

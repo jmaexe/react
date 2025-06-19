@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 type BotMoveParams = {
   board: string[];
-  botSymbol: "X" | "O";
+  botSymbol: "X" | "O" | null;
   turn: "X" | "O";
   winner: string | null;
   onBotMove: (
@@ -22,24 +22,15 @@ export default function useBotMove({
   onError,
 }: BotMoveParams) {
   useEffect(() => {
-    if (turn !== botSymbol || winner) return;
+    console.log("useBotMove effect triggered", board, botSymbol, turn, winner);
+    if (!botSymbol || turn !== botSymbol || winner) return;
     const playBotMove = async () => {
-      console.log(
-        "useBotMove effect triggered",
-        board,
-        botSymbol,
-        turn,
-        winner
-      );
       try {
-        const res = await fetch(
-          `http://${window.location.hostname}:8000/play-bot/`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ board, bot_symbol: botSymbol }),
-          }
-        );
+        const res = await fetch(`http://192.168.1.2:8000/play-bot/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ board, bot_symbol: botSymbol }),
+        });
         if (!res.ok) throw new Error("Server error");
 
         const data = await res.json();
