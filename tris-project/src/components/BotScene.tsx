@@ -90,9 +90,9 @@ const BotScene: React.FC = () => {
     return (
       <section>
         <h2>Scegli il tuo simbolo</h2>
-        <button onClick={() => handleChoose("X")}>X</button>
-        <button onClick={() => handleChoose("O")}>O</button>
-        <button onClick={() => handleChoose("random")}>Casuale</button>
+        <button className="choose-btn1" onClick={() => handleChoose("X")}>X</button>
+        <button className="choose-btn2" onClick={() => handleChoose("O")}>O</button>
+        <button className="choose-btn3" onClick={() => handleChoose("random")}>Casuale</button>
       </section>
     );
   }

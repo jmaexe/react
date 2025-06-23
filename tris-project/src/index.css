@@ -5,7 +5,6 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,6 +27,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #242424;
 }
 
 h1 {
@@ -35,20 +35,116 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+h2 {
+  font-size: 2.4em;
+  line-height: 1.1;
+  color: black;
+  position: fixed;
+  top: 35%;
+  left: 40%;
+}
+
+.bot-button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  border: 2px solid transparent;
+  position: fixed;
+  top: 30%;
+  right: 45%;
+  padding: 1.2em 2.4em;
+  font-size: 24px;
+  font-weight: bolder;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #920017;
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
+
+.pvp-button {
+  border-radius: 8px;
+  border: 2px solid transparent; 
+  position: fixed;
+  top: 43%;
+  right: 45.7%;
+  padding: 1.2em 2.4em;
+  font-size: 24px;
+  font-weight: bolder;
+  font-family: inherit;
+  background-color: #fdad00;
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
+
+.bot-button:hover {
+  border-color: #ffd101;
+}
+
+.pvp-button:hover {
+  border-color: #920017;
+}
+
+.choose-btn1 {
+  border-radius: 8px;
+  border: 2px solid transparent; 
+  position: fixed;
+  top: 47%;
+  left: 40.5%;
+  padding: 0.6em 1em;
+  font-size: 24px;
+  font-weight: bolder;
+  font-family: inherit;
+  background-color: #fdad00;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.choose-btn2 {
+  border-radius: 8px;
+  border: 2px solid transparent; 
+  position: fixed;
+  top: 47%;
+  left: 45.5%;
+  padding: 0.6em 1em;
+  font-size: 24px;
+  font-weight: bolder;
+  font-family: inherit;
+  background-color: #920017;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.choose-btn3 {
+  border-radius: 8px;
+  border: 2px solid transparent; 
+  position: fixed;
+  top: 47%;
+  left: 50.5%;
+  padding: 0.6em 1em;
+  font-size: 24px;
+  font-weight: bolder;
+  font-family: inherit;
+  background-color: #ada7a7;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.choose-btn1:hover {
+  border-color: #000000;
+}
+
+.choose-btn2:hover {
+  border-color: #000000;
+}
+
+.choose-btn3:hover {
+  border-color: #000000;
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

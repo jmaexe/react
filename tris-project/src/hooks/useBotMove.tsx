@@ -26,7 +26,7 @@ export default function useBotMove({
     if (!botSymbol || turn !== botSymbol || winner) return;
     const playBotMove = async () => {
       try {
-        const res = await fetch(`http://192.168.1.2:8000/play-bot/`, {
+        const res = await fetch(`http://192.168.17.28:8000/play-bot/`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ board, bot_symbol: botSymbol }),
