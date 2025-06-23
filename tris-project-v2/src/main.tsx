@@ -25,3 +25,4 @@ if (!rootElement.innerHTML) {
     </StrictMode>
   );
 }
+
