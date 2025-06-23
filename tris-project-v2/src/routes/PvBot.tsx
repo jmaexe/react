@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import useBotMove from "../hooks/useBotMove";
 
@@ -99,6 +99,7 @@ function RouteComponent() {
         <button onClick={() => handleChoose("X")}>X</button>
         <button onClick={() => handleChoose("O")}>O</button>
         <button onClick={() => handleChoose("random")}>Casuale</button>
+        <Link to = ".."> <button> </button> </Link>
       </section>
     );
   }

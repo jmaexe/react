@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/PvP")({
   component: RouteComponent,
@@ -32,7 +33,7 @@ function RouteComponent() {
           <button onClick={enterInGame}>Entra</button>
         </div>
       ) : (
-        <PvPBoard roomName={room} name={name} />
+        "pop"//<PvPBoard roomName={room} name={name} />
       )}
     </div>
   );
