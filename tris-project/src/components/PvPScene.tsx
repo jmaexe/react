@@ -29,7 +29,7 @@ const PvPScene = () => {
           <button onClick={enterInGame}>Entra</button>
         </div>
       ) : (
-        <PvPBoard roomName={room} />
+        <PvPBoard roomName={room} name={name} />
       )}
     </div>
   );

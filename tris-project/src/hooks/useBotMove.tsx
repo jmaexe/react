@@ -25,6 +25,8 @@ export default function useBotMove({
     console.log("useBotMove effect triggered", board, botSymbol, turn, winner);
     if (!botSymbol || turn !== botSymbol || winner) return;
     const playBotMove = async () => {
+      console.log("Bot is making a move...");
+
       try {
         const res = await fetch(`http://192.168.17.28:8000/play-bot/`, {
           method: "POST",

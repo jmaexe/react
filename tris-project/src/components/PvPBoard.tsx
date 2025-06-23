@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function PvPBoard({ roomName }: { roomName: string }) {
+function PvPBoard({ roomName, name }: { roomName: string; name: string }) {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [board, setBoard] = useState(Array(9).fill(""));
   const [symbol, setSymbol] = useState<string | null>(null);
@@ -13,11 +13,14 @@ function PvPBoard({ roomName }: { roomName: string }) {
 
     const socket = new WebSocket(
       roomName
-        ? `${protocol}://localhost:8000/ws/tris/${roomName}/`
-        : `${protocol}://localhost:8000/ws/tris/`
+        ? `${protocol}://192.168.17.28:8000/ws/tris/${roomName}/`
+        : `${protocol}://192.168.17.28:8000/ws/tris/`
     );
 
-    socket.onopen = () => console.log(`Connesso alla stanza ${roomName}`);
+    socket.onopen = () => {
+      console.log(`Connesso alla stanza ${roomName}`);
+      socket.send(JSON.stringify({ type: "init", player_name: name }));
+    };
     socket.onclose = () => console.log("Disconnesso");
 
     socket.onmessage = (e) => {
@@ -25,6 +28,7 @@ function PvPBoard({ roomName }: { roomName: string }) {
 
       if (data.type === "init") {
         setSymbol(data.symbol);
+        console.log(JSON.stringify(data));
       } else if (data.type === "update") {
         setBoard(data.board);
         setTurn(data.turn);
