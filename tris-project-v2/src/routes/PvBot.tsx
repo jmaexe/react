@@ -1,5 +1,12 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Alert, Box, Button, Grid, Stack, Typography } from "@mui/material";
+import {
+  createFileRoute,
+  Link,
+  Link as RouterLink,
+} from "@tanstack/react-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import ReactConfetti from "react-confetti";
+import Confetti from "../components/Confetti";
 import useBotMove from "../hooks/useBotMove";
 
 export const Route = createFileRoute("/PvBot")({
@@ -27,6 +34,7 @@ function RouteComponent() {
     if (!playerSymbol) return null;
     return playerSymbol === "X" ? "O" : "X";
   }, [playerSymbol]);
+
   const onBotMove = useCallback(
     (newBoard: string[], nextTurn: "X" | "O", winner: string | null) => {
       setBoard(newBoard);
@@ -75,12 +83,9 @@ function RouteComponent() {
   };
 
   const handleChoose = (choice: "X" | "O" | "random") => {
-    if (choice === "random") {
-      const randomSymbol = Math.random() < 0.5 ? "X" : "O";
-      setPlayerSymbol(randomSymbol);
-    } else {
-      setPlayerSymbol(choice);
-    }
+    const chosen =
+      choice === "random" ? (Math.random() < 0.5 ? "X" : "O") : choice;
+    setPlayerSymbol(chosen);
   };
 
   const resetGame = () => {
@@ -94,75 +99,90 @@ function RouteComponent() {
 
   if (!playerSymbol) {
     return (
-      <section>
-        <h2>Scegli il tuo simbolo</h2>
-        <button onClick={() => handleChoose("X")}>X</button>
-        <button onClick={() => handleChoose("O")}>O</button>
-        <button onClick={() => handleChoose("random")}>Casuale</button>
-        <Link to = ".."> <button> </button> </Link>
-      </section>
+      <Box textAlign="center" mt={4}>
+        <Typography variant="h5" gutterBottom>
+          Scegli il tuo simbolo
+        </Typography>
+        <Stack spacing={2} direction="column" alignItems="center">
+          <Button variant="contained" onClick={() => handleChoose("X")}>
+            X
+          </Button>
+          <Button variant="contained" onClick={() => handleChoose("O")}>
+            O
+          </Button>
+          <Button variant="contained" onClick={() => handleChoose("random")}>
+            Casuale
+          </Button>
+          <Button variant="outlined" component={RouterLink} to="..">
+            Torna indietro
+          </Button>
+        </Stack>
+      </Box>
     );
   }
+
   return (
-    <section>
-      <h2>
+    <Box textAlign="center" mt={4}>
+      <Typography variant="h5" gutterBottom>
         Tu sei: <strong>{playerSymbol}</strong> — Turno di:{" "}
         <strong>{turn}</strong>
-      </h2>
+      </Typography>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && (
+        <Alert severity="error" sx={{ mt: 2, mb: 2 }}>
+          {error}
+        </Alert>
+      )}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 100px)",
-          gap: "10px",
-          marginBottom: "1rem",
-        }}
+      <Grid
+        container
+        spacing={1}
+        justifyContent="center"
+        sx={{ maxWidth: 320, margin: "auto", mt: 2, mb: 3 }}
       >
-        {board.map((cell, idx) => (
-          <button
-            key={idx}
-            onClick={() => makeMove(idx)}
-            disabled={
-              cell !== "" || winner !== null || turn !== playerSymbol || loading
-            }
-            style={{
-              width: 100,
-              height: 100,
-              fontSize: 32,
-              backgroundColor: cell === "" ? "#fff" : "#ddd",
-              cursor:
-                cell === "" && !winner && turn === playerSymbol && !loading
-                  ? "pointer"
-                  : "not-allowed",
-              opacity:
-                cell === "" && !winner && turn === playerSymbol && !loading
-                  ? 1
-                  : 0.6,
-              border: "2px solid #000",
-            }}
-          >
-            {cell}
-          </button>
-        ))}
-      </div>
+        {board.map((cell, idx) => {
+          const disabled =
+            cell !== "" || winner !== null || turn !== playerSymbol || loading;
+
+          return (
+            <Grid size={"auto"}>
+              <Button
+                variant="outlined"
+                onClick={() => makeMove(idx)}
+                disabled={disabled}
+                sx={{
+                  width: 100,
+                  height: 100,
+                  fontSize: 32,
+                  backgroundColor: cell === "" ? "#fff" : "#ddd",
+                  cursor: disabled ? "not-allowed" : "pointer",
+                  opacity: disabled ? 0.6 : 1,
+                  border: "2px solid #000",
+                }}
+              >
+                {cell}
+              </Button>
+            </Grid>
+          );
+        })}
+      </Grid>
 
       {winner && (
-        <h3>
+        <Typography variant="h6" sx={{ mb: 2 }}>
           {winner === "draw"
             ? "Pareggio!"
             : winner === playerSymbol
               ? "Hai vinto!"
               : "Hai perso!"}
-        </h3>
+        </Typography>
       )}
+      {winner && winner === playerSymbol && <Confetti />}
 
-      {loading && <p>Bot sta giocando...</p>}
+      {loading && <Typography>Bot sta giocando...</Typography>}
 
-      <button onClick={resetGame} style={{ marginTop: "1rem" }}>
+      <Button variant="contained" onClick={resetGame} sx={{ mt: 2 }}>
         Reset partita
-      </button>
-    </section>
+      </Button>
+    </Box>
   );
 }

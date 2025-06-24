@@ -1,25 +1,30 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import Button from '@mui/material/Button';
-import App from "../app";
+import { Button } from "@mui/material";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
+import foto4 from "../assets/images/foto-4.jpg";
+import "../index.css";
 
 export const Route = createRootRoute({
   component: () => (
-    <App>
-      <div className="p-2 flex gap-2">
-        <Button component={Link} to="/" variant="contained" className="home-button">
-        Home
-        </Button>
-        <Button component={Link} to="/PvP" variant="contained" className="pvp-button">
-        PvP
-        </Button>
-        <Button component={Link} to="/PvBot" variant="contained" className="bot-button">
-        PvBot
-        </Button>
+    <>
+      <div
+        style={{
+          backgroundImage: `url(${foto4})`,
+          width: "100%",
+          height: "100vh",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          zIndex: -10,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Outlet />
       </div>
-      <hr />
-      <Outlet />
-      <TanStackRouterDevtools />
-    </App>
+    </>
   ),
 });

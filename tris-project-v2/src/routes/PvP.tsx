@@ -1,5 +1,11 @@
+import { Box, Paper, Typography } from "@mui/material";
+
 import { createFileRoute } from "@tanstack/react-router";
+
 import { useState } from "react";
+import PvPBoard from "../components/PvPBoard";
+import PvPForm from "../components/PvPForm";
+import RoomsList from "../components/RoomsList";
 
 export const Route = createFileRoute("/PvP")({
   component: RouteComponent,
@@ -9,32 +15,43 @@ function RouteComponent() {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
   const [inGame, setInGame] = useState(false);
-  const enterInGame = () => {
-    setRoom(room.trim());
-    setInGame(true);
-  };
+
   return (
-    <div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", md: "row" },
+        gap: 4,
+        justifyContent: "center",
+        alignItems: "start",
+        p: 4,
+      }}
+    >
       {!inGame ? (
-        <div>
-          <h2>inserisci il nome</h2>
-          <input
-            type="text"
-            placeholder="nome"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="nome stanza"
-            value={room}
-            onChange={(e) => setRoom(e.target.value)}
-          />
-          <button onClick={enterInGame}>Entra</button>
-        </div>
+        <>
+          <Paper elevation={3} sx={{ p: 3, width: 300, textAlign: "center" }}>
+            <PvPForm
+              name={name}
+              setName={setName}
+              room={room}
+              setRoom={setRoom}
+              enterInGame={() => {
+                if (name.trim()) {
+                  setInGame(true);
+                }
+              }}
+            />
+          </Paper>
+          <Paper elevation={3} sx={{ p: 3, width: 300, textAlign: "center" }}>
+            <Typography variant="h6" gutterBottom textAlign="center">
+              Stanze disponibili
+            </Typography>
+            <RoomsList selectRoom={(room) => setRoom(room)} />
+          </Paper>
+        </>
       ) : (
-        "pop"//<PvPBoard roomName={room} name={name} />
+        <PvPBoard roomName={room} name={name} />
       )}
-    </div>
+    </Box>
   );
 }

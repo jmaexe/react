@@ -3,6 +3,9 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 // Import the generated route tree
+import { StyledEngineProvider } from "@mui/material";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NameProvider } from "./contexts/NameContext";
 import { routeTree } from "./routeTree.gen";
 
 // Create a new router instance
@@ -14,15 +17,20 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
-
+const queryClient = new QueryClient();
 // Render the app
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>
+    // <StrictMode>
+    <StyledEngineProvider injectFirst>
+      <QueryClientProvider client={queryClient}>
+        <NameProvider>
+          <RouterProvider router={router} />
+        </NameProvider>
+      </QueryClientProvider>
+    </StyledEngineProvider>
+    // </StrictMode>
   );
 }
-
