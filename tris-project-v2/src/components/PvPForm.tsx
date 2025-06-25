@@ -22,11 +22,11 @@ const PvPForm = ({
         gap: 2,
         width: "100%",
         margin: "0 auto",
-        mt: 4,
+        mt: 0,
       }}
     >
       <Typography variant="h6" textAlign="center">
-        inserisci il nome
+        Inserisci il nome
       </Typography>
 
       <TextField

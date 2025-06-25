@@ -112,7 +112,14 @@ function RouteComponent() {
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ fontWeight: 700, color: "primary.main" }}
+        sx={{ fontWeight: 700, color: "primary.main",  textShadow: `
+        -1px -1px 0 white,
+        1px -1px 0 white,
+        -1px  1px 0 white,
+        1px  1px 0 white,
+        2px 2px 4px rgba(141, 17, 17, 0.5), 
+        4px 4px 8px rgba(247, 204, 17, 0.5)
+      ` }}
       >
         Tu sei: <strong>{playerSymbol}</strong> — Turno di:{" "}
         <strong>{turn}</strong>

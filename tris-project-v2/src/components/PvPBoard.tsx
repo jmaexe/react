@@ -31,8 +31,8 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
 
     const socket = new WebSocket(
       roomName
-        ? `${protocol}://192.168.1.2:8000/ws/tris/${roomName}/`
-        : `${protocol}://192.168.1.2:8000/ws/tris/`
+        ? `${protocol}://192.168.17.28:8000/ws/tris/${roomName}/`
+        : `${protocol}://192.168.17.28:8000/ws/tris/`
     );
 
     socket.onopen = () => {
@@ -132,7 +132,13 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
           <Typography variant="h4" gutterBottom>
             Stanza: {roomName}
           </Typography>
-          <Typography variant="h6" sx={{ mb: 2 }}>
+          <Typography variant="h6" sx={{ mb: 2, textShadow: `
+          -1px -1px 0 white,
+          1px -1px 0 white,
+          -1px  1px 0 white,
+          1px  1px 0 white
+          2px 2px 4px rgba(0, 0, 0, 0.0.5);
+      `  }}>
             Tu sei: <strong>{symbol}</strong> — Turno di:{" "}
             <strong>{turn}</strong>
           </Typography>

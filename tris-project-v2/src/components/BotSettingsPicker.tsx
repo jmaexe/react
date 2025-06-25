@@ -38,6 +38,7 @@ const BotSettingsPicker = ({ onConfirm }: BotSettingsPickerProps) => {
           exclusive
           onChange={(_, value) => setSymbol(value)}
           color="primary"
+          sx={{ '& .MuiToggleButton-root': { padding: '0.5em 1em' } }}
         >
           <ToggleButton value="X">X</ToggleButton>
           <ToggleButton value="O">O</ToggleButton>

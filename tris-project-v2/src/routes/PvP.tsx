@@ -20,8 +20,8 @@ function RouteComponent() {
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        gap: 4,
+        flexDirection: { xs: "column", md: "row"},
+        gap: 2,
         justifyContent: "center",
         alignItems: "start",
         p: 4,

@@ -21,6 +21,9 @@ function Index() {
       <Typography
         variant="h2"
         sx={{
+          position: "absolute",
+          top: "40%",
+          left: "33%",
           fontWeight: 700,
           color: "#920017",
         }}
@@ -35,6 +38,7 @@ function Index() {
           variant="contained"
           color="primary"
           size="large"
+          sx={{ position: "absolute", top: "51%", left: "42,5%", width: "12vw" }}
         >
           PvP
         </Button>
@@ -44,6 +48,7 @@ function Index() {
           variant="contained"
           color="secondary"
           size="large"
+          sx={{ position: "absolute", top: "56%", left: "42,5%", width: "12vw" }}
         >
           PvBot
         </Button>

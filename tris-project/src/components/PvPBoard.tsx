@@ -73,6 +73,12 @@ function PvPBoard({ roomName, name }: { roomName: string; name: string }) {
       <div
         style={{
           display: "grid",
+          textShadow: `
+          -1px -1px 0 white,
+          1px -1px 0 white,
+          -1px  1px 0 white,
+          1px  1px 0 white
+          `,
           gridTemplateColumns: "repeat(3, 100px)",
           gap: "5px",
         }}
