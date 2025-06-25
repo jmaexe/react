@@ -28,6 +28,7 @@ const RoomsList = ({ selectRoom }: RoomsListProps) => {
     queryFn: fetchRooms,
     staleTime: Infinity,
     refetchOnWindowFocus: false,
+    refetchInterval: 60000,
   });
   return (
     <>

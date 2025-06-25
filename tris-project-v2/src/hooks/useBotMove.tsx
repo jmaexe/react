@@ -29,16 +29,20 @@ export default function useBotMove({
     const playBotMove = async () => {
       console.log("Bot is making a move...");
 
+      console.log(window.location);
       try {
-        const res = await fetch(`http://192.168.17.28:8000/play-bot/`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            board,
-            bot_symbol: botSymbol,
-            difficulty,
-          }),
-        });
+        const res = await fetch(
+          `http://${window.location.hostname}:8000/play-bot/`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              board,
+              bot_symbol: botSymbol,
+              difficulty,
+            }),
+          }
+        );
         if (!res.ok) throw new Error("Server error");
 
         const data = await res.json();

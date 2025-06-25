@@ -18,12 +18,12 @@ type PvPBoardProps = {
 function PvPBoard({ roomName, name }: PvPBoardProps) {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [board, setBoard] = useState(Array(9).fill(""));
-  const [symbol, setSymbol] = useState<string | null>(null);
-  const [turn, setTurn] = useState("X");
+  const [symbol, setSymbol] = useState<"X" | "O" | null>(null);
+  const [turn, setTurn] = useState<"X" | "O">("X");
   const [winner, setWinner] = useState<string | null>(null);
   const [isFull, setIsFull] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const [, setIsConnected] = useState(false);
 
   useEffect(() => {
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
@@ -31,8 +31,8 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
 
     const socket = new WebSocket(
       roomName
-        ? `${protocol}://192.168.17.28:8000/ws/tris/${roomName}/`
-        : `${protocol}://192.168.17.28:8000/ws/tris/`
+        ? `${protocol}://${host}:8000/ws/tris/${roomName}/`
+        : `${protocol}://${host}:8000/ws/tris/`
     );
 
     socket.onopen = () => {
@@ -61,8 +61,14 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
           setLoading(false);
           break;
         case "reset":
+          console.log("reset case ");
           setBoard(Array(9).fill(""));
-          setTurn("X");
+          if (symbol) {
+            setTurn(symbol);
+          } else {
+            setTurn("X");
+          }
+
           setWinner(null);
           break;
         case "full":
@@ -82,13 +88,18 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
       setTurn("X");
       setWinner(null);
     };
-  }, [roomName, name]);
+  }, [roomName, name, symbol]);
 
   const makeMove = (index: number) => {
     if (!ws || ws.readyState !== WebSocket.OPEN) return;
     if (winner || turn !== symbol || board[index] !== "") return;
 
     ws.send(JSON.stringify({ type: "move", index }));
+  };
+
+  const resetGame = () => {
+    if (!ws || ws.readyState !== WebSocket.OPEN) return;
+    ws.send(JSON.stringify({ type: "reset" }));
   };
 
   if (loading) {
@@ -132,13 +143,19 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
           <Typography variant="h4" gutterBottom>
             Stanza: {roomName}
           </Typography>
-          <Typography variant="h6" sx={{ mb: 2, textShadow: `
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 2,
+              textShadow: `
           -1px -1px 0 white,
           1px -1px 0 white,
           -1px  1px 0 white,
           1px  1px 0 white
           2px 2px 4px rgba(0, 0, 0, 0.0.5);
-      `  }}>
+      `,
+            }}
+          >
             Tu sei: <strong>{symbol}</strong> — Turno di:{" "}
             <strong>{turn}</strong>
           </Typography>
@@ -204,8 +221,23 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
                           : "Hai perso!"}
                     </Typography>
 
-                    <Button component={Link} variant="contained" to="/">
+                    <Button
+                      component={Link}
+                      variant="contained"
+                      to="/"
+                      onClick={() => {
+                        if (!ws || ws.readyState !== WebSocket.OPEN) return;
+                        ws.send(JSON.stringify({ type: "exit", name }));
+                      }}
+                    >
                       Home
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={resetGame}
+                    >
+                      Rigioca
                     </Button>
                   </Paper>
                 </Modal>
