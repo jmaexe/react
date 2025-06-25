@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import foto4 from "../assets/images/foto-4.jpg";
 import "../index.css";

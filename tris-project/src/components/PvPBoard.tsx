@@ -8,13 +8,14 @@ function PvPBoard({ roomName, name }: { roomName: string; name: string }) {
   const [winner, setWinner] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("useeffect PvPBoard");
+
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
     const host = window.location.hostname;
-
     const socket = new WebSocket(
       roomName
-        ? `${protocol}://192.168.17.28:8000/ws/tris/${roomName}/`
-        : `${protocol}://192.168.17.28:8000/ws/tris/`
+        ? `${protocol}://192.168.1.2:8000/ws/tris/${roomName}/`
+        : `${protocol}://192.168.1.2:8000/ws/tris/`
     );
 
     socket.onopen = () => {
@@ -28,6 +29,7 @@ function PvPBoard({ roomName, name }: { roomName: string; name: string }) {
 
       if (data.type === "init") {
         setSymbol(data.symbol);
+
         console.log(JSON.stringify(data));
       } else if (data.type === "update") {
         setBoard(data.board);
@@ -53,7 +55,7 @@ function PvPBoard({ roomName, name }: { roomName: string; name: string }) {
       setTurn("X");
       setWinner(null);
     };
-  }, [roomName]);
+  }, [name, roomName]);
 
   const makeMove = (index: number) => {
     if (!ws || ws.readyState !== WebSocket.OPEN) return;

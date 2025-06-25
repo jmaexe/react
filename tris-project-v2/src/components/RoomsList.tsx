@@ -7,16 +7,16 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 import { fetchRooms, type Room } from "../types/Room";
+import Error from "./Error";
 import Loading from "./Loading";
 
 type RoomsListProps = {
   selectRoom: (room: string) => void;
 };
 const RoomsList = ({ selectRoom }: RoomsListProps) => {
-  const queryClient = useQueryClient();
   const {
     isFetching,
     isLoading,
@@ -31,44 +31,48 @@ const RoomsList = ({ selectRoom }: RoomsListProps) => {
   });
   return (
     <>
-      {error && <p>errore</p>}
-      {(isFetching || isLoading) && <Loading />}{" "}
+      {error && <Error error={error.message} />}
+      {(isFetching || isLoading) && <Loading size={20} />}{" "}
       {rooms && (
-        <List>
-          {rooms.length == 0 ? (
-            <Box
-              sx={{
-                display: "flex",
-                alignContent: "center",
-                justifyContent: "center",
-                gap: 4,
-              }}
-            >
-              <Typography textAlign="center">Nessuna stanza trovata</Typography>
-              <Button
-                variant="contained"
-                className="bot-button"
-                onClick={() => refetch()}
+        <>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => refetch()}
+          >
+            Riprova
+          </Button>
+          <List>
+            {rooms.length == 0 ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignContent: "center",
+                  justifyContent: "center",
+                  gap: 4,
+                }}
               >
-                Riprova
-              </Button>
-            </Box>
-          ) : (
-            rooms.map((r: Room) => (
-              <ListItem key={r.room_name} disablePadding>
-                <ListItemButton onClick={() => selectRoom(r.room_name)}>
-                  <ListItemText sx={{ color: "#920017" }}>
-                    {r.room_name}{" "}
-                  </ListItemText>
+                <Typography textAlign="center" color="primary.main">
+                  Nessuna stanza trovata
+                </Typography>
+              </Box>
+            ) : (
+              rooms.map((r: Room) => (
+                <ListItem key={r.room_name} disablePadding>
+                  <ListItemButton onClick={() => selectRoom(r.room_name)}>
+                    <ListItemText sx={{ color: "#920017" }}>
+                      {r.room_name}{" "}
+                    </ListItemText>
 
-                  <ListItemText sx={{ color: "#920017" }}>
-                    {r.players}{" "}
-                  </ListItemText>
-                </ListItemButton>
-              </ListItem>
-            ))
-          )}
-        </List>
+                    <ListItemText sx={{ color: "#920017" }}>
+                      {r.players.join(", ")}{" "}
+                    </ListItemText>
+                  </ListItemButton>
+                </ListItem>
+              ))
+            )}
+          </List>
+        </>
       )}
     </>
   );

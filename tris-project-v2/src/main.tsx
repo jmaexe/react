@@ -3,10 +3,11 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 // Import the generated route tree
-import { StyledEngineProvider } from "@mui/material";
+import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NameProvider } from "./contexts/NameContext";
 import { routeTree } from "./routeTree.gen";
+import theme from "./theme";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -27,7 +28,9 @@ if (!rootElement.innerHTML) {
     <StyledEngineProvider injectFirst>
       <QueryClientProvider client={queryClient}>
         <NameProvider>
-          <RouterProvider router={router} />
+          <ThemeProvider theme={theme}>
+            <RouterProvider router={router} />
+          </ThemeProvider>
         </NameProvider>
       </QueryClientProvider>
     </StyledEngineProvider>

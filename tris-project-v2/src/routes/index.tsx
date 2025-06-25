@@ -18,8 +18,14 @@ function Index() {
         gap: 4,
       }}
     >
-      <Typography variant="h4" className="text">
-        Seleziona la modalità di gioco:
+      <Typography
+        variant="h2"
+        sx={{
+          fontWeight: 700,
+          color: "#920017",
+        }}
+      >
+        Benvenuto a Tris!
       </Typography>
 
       <Stack spacing={3} sx={{ width: "200px" }}>
@@ -27,7 +33,7 @@ function Index() {
           component={Link}
           to="/PvP"
           variant="contained"
-          className="pvp-button"
+          color="primary"
           size="large"
         >
           PvP
@@ -36,7 +42,7 @@ function Index() {
           component={Link}
           to="/PvBot"
           variant="contained"
-          className="bot-button"
+          color="secondary"
           size="large"
         >
           PvBot

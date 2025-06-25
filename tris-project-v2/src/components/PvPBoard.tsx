@@ -1,9 +1,15 @@
-import { Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
 import Confetti from "./Confetti";
-import Loading from "./Loading";
 import Modal from "./Modal";
 type PvPBoardProps = {
   roomName: string;
@@ -25,8 +31,8 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
 
     const socket = new WebSocket(
       roomName
-        ? `${protocol}://192.168.17.28:8000/ws/tris/${roomName}/`
-        : `${protocol}://192.168.17.28:8000/ws/tris/`
+        ? `${protocol}://192.168.1.2:8000/ws/tris/${roomName}/`
+        : `${protocol}://192.168.1.2:8000/ws/tris/`
     );
 
     socket.onopen = () => {
@@ -87,73 +93,121 @@ function PvPBoard({ roomName, name }: PvPBoardProps) {
 
   if (loading) {
     return (
-      <div>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          textAlign: "center",
+          gap: 2,
+        }}
+      >
         <Typography variant="h2">Attendi il giocatore 2 </Typography>
-        <Loading />
-      </div>
+        <CircularProgress size={45} />
+        <Button variant="contained" color="secondary" component={Link} to="..">
+          Indietro
+        </Button>
+      </Box>
     );
   }
   return (
     <AnimatePresence initial={false}>
       {isFull ? (
         <Modal>
-          <h2>Stanza piena</h2>
-          <p>La stanza {roomName} è piena. Riprova più tardi.</p>
-          <Button
-            component={Link}
-            variant="contained"
-            className="home-button"
-            to=".."
-          >
-            Chiudi
-          </Button>
+          <Paper>
+            <Typography variant="h4" gutterBottom>
+              Stanza piena
+            </Typography>
+            <Typography sx={{ mb: 2 }} color="main.primary">
+              La stanza {roomName} è piena. Riprova più tardi.
+            </Typography>
+            <Button component={Link} variant="contained" to="/">
+              Chiudi
+            </Button>
+          </Paper>
         </Modal>
       ) : (
-        <div>
-          <h2> Stanza: {roomName}</h2>
-          <p>
-            Tu sei: <b>{symbol}</b> - Turno di: <b>{turn}</b>
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 100px)",
-              gap: "5px",
-            }}
+        <Box textAlign="center" mt={4}>
+          <Typography variant="h4" gutterBottom>
+            Stanza: {roomName}
+          </Typography>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Tu sei: <strong>{symbol}</strong> — Turno di:{" "}
+            <strong>{turn}</strong>
+          </Typography>
+
+          <Grid
+            container
+            spacing={1}
+            justifyContent="center"
+            sx={{ maxWidth: 320, margin: "auto", mb: 3 }}
           >
-            {board.map((cell, i) => (
-              <button
-                key={i}
-                onClick={() => makeMove(i)}
-                style={{
-                  width: 100,
-                  height: 100,
-                  fontSize: 32,
-                  backgroundColor: cell === "" ? "#fff" : "#ddd",
-                  opacity: cell === "" && !winner && turn === symbol ? 1 : 0.6,
-                  cursor:
-                    cell === "" && !winner && turn === symbol
-                      ? "pointer"
-                      : "not-allowed",
-                  border: "2px solid #000",
-                }}
-                disabled={cell !== "" || winner !== null || turn !== symbol}
-              >
-                {cell}
-              </button>
-            ))}
-          </div>
-          {winner && (
-            <h3>
-              {winner === "draw"
-                ? "Pareggio!"
-                : winner === symbol
-                  ? "Hai vinto!"
-                  : "Hai perso!"}
-            </h3>
-          )}
-          {winner && winner === symbol && <Confetti />}
-        </div>
+            {board.map((cell, i) => {
+              const disabled =
+                cell !== "" || winner !== null || turn !== symbol;
+              return (
+                <Grid>
+                  <Button
+                    variant="outlined"
+                    onClick={() => makeMove(i)}
+                    disabled={disabled}
+                    sx={{
+                      width: 100,
+                      height: 100,
+                      fontSize: 32,
+                      fontWeight: "bold",
+                      backgroundColor: cell === "" ? "#FFB805" : "#f5f5f5",
+                      color: "#920017",
+                      border: "4px solid #920017",
+                      boxShadow: `
+                        2px 2px 0 #fdad00,
+                        4px 4px 0 #920017
+                      `,
+                      textShadow: cell
+                        ? `
+                          1px 1px 0 #920017,
+                          2px 2px 0 #fdad00
+                        `
+                        : "none",
+                      transition: "all 0.15s ease-in-out",
+                      cursor: disabled ? "not-allowed" : "pointer",
+                      opacity: disabled ? 0.6 : 1,
+                      "&:hover": {
+                        backgroundColor: disabled ? undefined : "#FFD300",
+                      },
+                    }}
+                  >
+                    {cell}
+                  </Button>
+                </Grid>
+              );
+            })}
+          </Grid>
+
+          <AnimatePresence>
+            {winner && (
+              <>
+                <Modal>
+                  <Paper sx={{ maxWidth: "30rem" }}>
+                    <Typography variant="h4" gutterBottom>
+                      {winner === "draw"
+                        ? "Pareggio!"
+                        : winner === symbol
+                          ? "Hai vinto!"
+                          : "Hai perso!"}
+                    </Typography>
+
+                    <Button component={Link} variant="contained" to="/">
+                      Home
+                    </Button>
+                  </Paper>
+                </Modal>
+                {winner === symbol && <Confetti />}
+              </>
+            )}
+          </AnimatePresence>
+        </Box>
       )}
     </AnimatePresence>
   );

@@ -1,12 +1,12 @@
-import { Alert, Box, Button, Grid, Stack, Typography } from "@mui/material";
-import {
-  createFileRoute,
-  Link,
-  Link as RouterLink,
-} from "@tanstack/react-router";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { AnimatePresence } from "motion/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import ReactConfetti from "react-confetti";
+import BotBoard from "../components/BotBoard";
+import BotSettingsPicker from "../components/BotSettingsPicker";
 import Confetti from "../components/Confetti";
+import Error from "../components/Error";
+import Modal from "../components/Modal";
 import useBotMove from "../hooks/useBotMove";
 
 export const Route = createFileRoute("/PvBot")({
@@ -15,12 +15,16 @@ export const Route = createFileRoute("/PvBot")({
 
 function RouteComponent() {
   const [playerSymbol, setPlayerSymbol] = useState<"X" | "O" | null>(null);
+  const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">(
+    "easy"
+  );
+
   const [board, setBoard] = useState<string[]>(Array(9).fill(""));
   const [turn, setTurn] = useState<"X" | "O">("X");
   const [winner, setWinner] = useState<string | null>(null);
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     if (!playerSymbol) return;
 
@@ -58,7 +62,7 @@ function RouteComponent() {
     winner,
     onBotMove,
     onError,
-    difficulty: "easy",
+    difficulty,
   });
 
   const makeMove = (index: number) => {
@@ -82,10 +86,12 @@ function RouteComponent() {
     setError(null);
   };
 
-  const handleChoose = (choice: "X" | "O" | "random") => {
-    const chosen =
-      choice === "random" ? (Math.random() < 0.5 ? "X" : "O") : choice;
-    setPlayerSymbol(chosen);
+  const handleStart = (
+    chosenSymbol: "X" | "O",
+    diff: "easy" | "medium" | "hard"
+  ) => {
+    setPlayerSymbol(chosenSymbol);
+    setDifficulty(diff);
   };
 
   const resetGame = () => {
@@ -98,91 +104,80 @@ function RouteComponent() {
   };
 
   if (!playerSymbol) {
-    return (
-      <Box textAlign="center" mt={4}>
-        <Typography variant="h5" gutterBottom>
-          Scegli il tuo simbolo
-        </Typography>
-        <Stack spacing={2} direction="column" alignItems="center">
-          <Button variant="contained" onClick={() => handleChoose("X")}>
-            X
-          </Button>
-          <Button variant="contained" onClick={() => handleChoose("O")}>
-            O
-          </Button>
-          <Button variant="contained" onClick={() => handleChoose("random")}>
-            Casuale
-          </Button>
-          <Button variant="outlined" component={RouterLink} to="..">
-            Torna indietro
-          </Button>
-        </Stack>
-      </Box>
-    );
+    return <BotSettingsPicker onConfirm={handleStart} />;
   }
 
   return (
     <Box textAlign="center" mt={4}>
-      <Typography variant="h5" gutterBottom>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ fontWeight: 700, color: "primary.main" }}
+      >
         Tu sei: <strong>{playerSymbol}</strong> — Turno di:{" "}
         <strong>{turn}</strong>
       </Typography>
 
-      {error && (
-        <Alert severity="error" sx={{ mt: 2, mb: 2 }}>
-          {error}
-        </Alert>
-      )}
+      {error && <Error error={error} />}
 
-      <Grid
-        container
-        spacing={1}
-        justifyContent="center"
-        sx={{ maxWidth: 320, margin: "auto", mt: 2, mb: 3 }}
-      >
-        {board.map((cell, idx) => {
-          const disabled =
-            cell !== "" || winner !== null || turn !== playerSymbol || loading;
-
-          return (
-            <Grid size={"auto"}>
-              <Button
-                variant="outlined"
-                onClick={() => makeMove(idx)}
-                disabled={disabled}
-                sx={{
-                  width: 100,
-                  height: 100,
-                  fontSize: 32,
-                  backgroundColor: cell === "" ? "#fff" : "#ddd",
-                  cursor: disabled ? "not-allowed" : "pointer",
-                  opacity: disabled ? 0.6 : 1,
-                  border: "2px solid #000",
-                }}
-              >
-                {cell}
-              </Button>
-            </Grid>
-          );
-        })}
-      </Grid>
-
-      {winner && (
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          {winner === "draw"
-            ? "Pareggio!"
-            : winner === playerSymbol
-              ? "Hai vinto!"
-              : "Hai perso!"}
-        </Typography>
-      )}
-      {winner && winner === playerSymbol && <Confetti />}
-
-      {loading && <Typography>Bot sta giocando...</Typography>}
-
-      <Button variant="contained" onClick={resetGame} sx={{ mt: 2 }}>
-        Reset partita
+      <BotBoard
+        board={board}
+        playerSymbol={playerSymbol}
+        winner={winner}
+        turn={turn}
+        loading={loading}
+        makeMove={makeMove}
+      />
+      <Button variant="contained" color="primary" component={Link} to={".."}>
+        {" "}
+        Indietro
       </Button>
+
+      <AnimatePresence>
+        {winner && (
+          <>
+            <Modal>
+              <Paper sx={{ maxWidth: "30rem" }}>
+                <Typography variant="h4" gutterBottom>
+                  {winner === "draw"
+                    ? "Pareggio!"
+                    : winner !== botSymbol
+                      ? "Hai vinto!"
+                      : "Hai perso!"}
+                </Typography>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  sx={{
+                    width: "100%",
+                    mt: 2,
+                  }}
+                >
+                  <Button
+                    component={Link}
+                    variant="contained"
+                    color="primary"
+                    to="/"
+                    fullWidth
+                  >
+                    Home
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={resetGame}
+                    sx={{ mt: 2, textTransform: "none" }}
+                    fullWidth
+                  >
+                    Reset partita
+                  </Button>
+                </Stack>
+              </Paper>
+            </Modal>
+            {winner !== botSymbol && winner !== "draw" && <Confetti />}
+          </>
+        )}
+      </AnimatePresence>
     </Box>
   );
 }

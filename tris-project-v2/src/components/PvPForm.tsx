@@ -25,7 +25,7 @@ const PvPForm = ({
         mt: 4,
       }}
     >
-      <Typography variant="h6" component="h2" textAlign="center">
+      <Typography variant="h6" textAlign="center">
         inserisci il nome
       </Typography>
 
@@ -89,28 +89,21 @@ const PvPForm = ({
       <ButtonGroup sx={{ gap: 1 }}>
         <Button
           variant="contained"
+          color="primary"
           size="large"
           onClick={enterInGame}
           fullWidth
           disabled={name === ""}
-          className="bot-button"
         >
           Entra
         </Button>
         <Button
-          className="pvp-button"
-          variant="outlined"
+          variant="contained"
+          color="secondary"
           size="large"
           component={Link}
           to="/"
           fullWidth
-          style={{ color: "white" }}
-          sx={{
-            borderColor: "#fdad00",
-            "&:hover": {
-              borderColor: "#fdad00", // bordo al passaggio
-            },
-          }}
         >
           Indietro
         </Button>

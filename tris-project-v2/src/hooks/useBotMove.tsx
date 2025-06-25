@@ -30,7 +30,7 @@ export default function useBotMove({
       console.log("Bot is making a move...");
 
       try {
-        const res = await fetch(`http://192.168.17.28:8000/play-bot/`, {
+        const res = await fetch(`http://192.168.1.2:8000/play-bot/`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -53,8 +53,8 @@ export default function useBotMove({
             data.winner || null
           );
         } else if (
-          (data.winner && data.winner === "X") ||
-          data.winner === "O"
+          data.winner &&
+          (data.winner === "X" || data.winner === "O" || data.winner === "draw")
         ) {
           onBotMove(board, turn, data.winner);
         } else {

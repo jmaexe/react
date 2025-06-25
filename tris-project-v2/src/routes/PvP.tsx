@@ -1,6 +1,6 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Button, Modal, Paper, Typography } from "@mui/material";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { useState } from "react";
 import PvPBoard from "../components/PvPBoard";
